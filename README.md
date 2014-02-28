@@ -1,7 +1,7 @@
 CamKit
 ======
 
-******Access web cam and microphone using only html5 and javascript userGetMedia() function******
+****Access web cam and microphone using only html5 and javascript userGetMedia() function****
 
 This object can embed webcam video and microphone audio on a page without a third-party plugin.
 
