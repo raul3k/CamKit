@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Cam Rec</title>
+</head>
+<body>
+<video autoplay id="videoplay"></video>
+<canvas id="canvasface"></canvas>
+
+<script src="js_/ccv.js" type="text/javascript"></script>
+<script src="js_/face.js" type="text/javascript"></script>
+<script src="js_/CamKit.js" type="text/javascript"></script>
+<script>
+    // CamKit
+    var cam = new CamKit();
+
+    cam.video = true;
+    cam.audio = false;
+
+    cam.width = 400;
+    cam.height = 300;
+
+    cam.selector = '#videoplay'
+    // Initiate
+    cam.init()
+</script>
+</body>
+</html>
