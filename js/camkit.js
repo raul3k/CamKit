@@ -10,6 +10,7 @@ CamKit = function()
 
     this.init = function() {
 
+		// Errors messages
         var errorsMsgs = {
             NOT_SUPPORTED:  "Your browser does not support getUserMedia() method, please update it.",
             SELECTOR_EMPTY: "Query selector is empty. Use CamKit.selector to select a DOM element."
