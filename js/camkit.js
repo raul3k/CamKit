@@ -9,21 +9,30 @@ CamKit = function()
     this.height = 0;
 
     this.init = function() {
-        var error = function(){
-            console.log('Your browser does not support getUserMedia function. Please update it.');
-        }
 
-        // If the navigator supports the method
-        //alert(!navigator.webkitGetUserMedia);
-        if(!((navigator.getUserMedia) || (navigator.webkitGetUserMedia) || (navigator.mozGetUserMedia))){
-            error();
-            return false;
-        }
+        var errorsMsgs = {
+            NOT_SUPPORTED:  "Your browser does not support getUserMedia() method, please update it.",
+            SELECTOR_EMPTY: "Query selector is empty. Use CamKit.selector to select a DOM element."
+        };
 
+        // Normalise window.URL
+        window.URL || (window.URL = window.webkitURL || window.msURL || window.oURL);
+
+        // Normalise navigator.getUserMedia to navigator.getMedia function
+        navigator.getMedia = ( navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia);
+
+        // If the navigator supports the method getUserMedia
+        if(!navigator.getMedia){
+           console.log(errorsMsgs.NOT_SUPPORTED)
+           return false;
+        }
 
         // Attribute missing
         if(this.selector == '') {
-            console.log('Query selector is empty. Use CamKit.selector to select a DOM element.')
+            console.log(errorsMsgs.SELECTOR_EMPTY)
             return false;
         }
 
@@ -33,28 +42,15 @@ CamKit = function()
 
         var attr = {video: this.video, audio: this.audio}
 
-        if(navigator.getUserMedia){
-            navigator.getUserMedia(attr, function(midia_local) {
-                video = document.querySelector(this.selector);
-                video.src = window.webkitURL.createObjectURL(midia_local);
-                video.width = width;
-                video.height = height;
-            }, error());
-        } else if(navigator.webkitGetUserMedia) {
-            navigator.webkitGetUserMedia(attr, function(midia_local) {
-                video = document.querySelector(selector);
-                video.src = window.webkitURL.createObjectURL(midia_local);
-                video.width = width;
-                video.height = height;
-            }, error());
-        } else if(navigator.mozGetUserMedia) {
-            navigator.mozGetUserMedia(attr, function(midia_local) {
-                video = document.querySelector(this.selector);
-                video.src = window.webkitURL.createObjectURL(midia_local);
-                video.width = width;
-                video.height = height;
-            }, error());
-        }
+
+        navigator.getMedia(attr, function(stream){
+            video = document.querySelector(selector);
+            video.src = (window.URL && window.URL.createObjectURL) ? window.URL.createObjectURL(stream) : stream;
+            video.width = width;
+            video.height = heigth;
+        }, function(errorCode){
+            console.log(errorsMsgs.NOT_SUPPORTED + "\n" + e);
+        });
 
         return true;
     }
